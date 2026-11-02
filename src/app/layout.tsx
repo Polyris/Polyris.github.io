@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fixelText.variable} ${fixelDisplay.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           {children}
         </ThemeProvider>
       </body>
