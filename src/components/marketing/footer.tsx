@@ -39,7 +39,7 @@ export function Footer() {
                   alt="QuintaGroup"
                   width={63}
                   height={18}
-                  className="dark:invert"
+                  className="dark:[filter:invert(1)_hue-rotate(180deg)]"
                 />
               </Link>
             </p>
