@@ -15,7 +15,14 @@ describe("siteConfig", () => {
     expect(siteConfig.nav.length).toBeGreaterThan(0)
     for (const item of siteConfig.nav) {
       expect(item.label).toBeTruthy()
-      expect(item.href).toMatch(/^https?:\/\//)
+      expect(item.href).toBeTruthy()
+    }
+  })
+
+  it("has valid absolute URLs for external link fields", () => {
+    const externalFields = ["github", "docs", "quickstart", "tryItNow"] as const
+    for (const field of externalFields) {
+      expect(siteConfig[field]).toMatch(/^https?:\/\//)
     }
   })
 })

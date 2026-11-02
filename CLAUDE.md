@@ -172,3 +172,8 @@ for both the current static export and the future full SSR setup — do not chan
 Playwright tests must check visible, meaningful content (headings, labels, button text) —
 not bare structural elements like `<main>` or `<section>` that are always present regardless
 of whether child components rendered correctly.
+
+**Rule 14 — Scope Playwright locators to their container.**
+Never use a bare `page.getByRole("link", { name: "X" })` when the same text appears in
+multiple DOM regions (nav, hero, footer). Scope it: `page.getByRole("navigation").getByRole("link", …)`.
+Unscoped locators trigger strict-mode violations the moment a second matching element exists.

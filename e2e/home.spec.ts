@@ -7,8 +7,9 @@ test("homepage loads and shows brand name", async ({ page }) => {
 
 test("navigation links are visible", async ({ page }) => {
   await page.goto("/")
-  await expect(page.getByRole("link", { name: "Docs" })).toBeVisible()
-  await expect(page.getByRole("link", { name: "GitHub" })).toBeVisible()
+  const nav = page.getByRole("navigation")
+  await expect(nav.getByRole("link", { name: "Docs" })).toBeVisible()
+  await expect(nav.getByRole("link", { name: "GitHub" })).toBeVisible()
 })
 
 test("hero heading is visible", async ({ page }) => {
