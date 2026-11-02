@@ -12,9 +12,12 @@ Read this before writing any code.
 - **shadcn/ui** for every UI primitive — Button, Input, Card, Dialog, Sheet, etc.
 - `clsx` + `tailwind-merge` via a single `cn()` helper
 - `lucide-react` for icons
+- **Vitest** + Testing Library — unit/component tests (`src/__tests__/`)
+- **Playwright** (Chromium) — E2E tests (`e2e/`)
 - Node ≥ 20
 
-Future (not now): auth (Cognito, same as polyris console), MDX for docs.
+Current deployment: static export (`output: "export"`), hosted on GitHub Pages.
+Future (not now): full SSR/ISR, auth (Cognito, same as polyris console), MDX for docs.
 
 ---
 
@@ -96,6 +99,8 @@ src/
   lib/
     utils.ts            # cn() and friends
     dag-code.ts         # Python DSL code sample used in FeaturesShowcase
+  __tests__/            # Vitest unit/component tests
+e2e/                    # Playwright E2E tests
 ```
 
 Marketing sections (Hero, Features, Pricing, CTA, Footer) are plain
@@ -146,4 +151,29 @@ or component files.
 
 - One logical change per commit.
 - Commit message: imperative, English, ≤72 chars subject line.
-- Before any commit: `npm run lint && npm run typecheck && npm run build`.
+- Before any commit: `npm run lint && npm run typecheck && npm run build && npm run test:run`.
+
+---
+
+## Testing rules
+
+**Rule 11 — Explicit vitest imports in every test file.**
+Always import `describe`, `it`, `expect`, etc. from `"vitest"` explicitly — do not rely on globals
+even though `globals: true` is set in vitest config. TypeScript will not catch missing global
+imports until `tsc` is run against a vitest-aware tsconfig.
+
+**Rule 12 — E2E webServer uses `npm run dev`.**
+`playwright.config.ts` uses `npm run dev` (not `npm run start`) as the webServer command.
+`next start` requires a Node.js server and breaks with `output: "export"`. `npm run dev` works
+for both the current static export and the future full SSR setup — do not change this to
+`next start` until `output: "export"` is removed from `next.config.ts`.
+
+**Rule 13 — E2E tests assert content, not containers.**
+Playwright tests must check visible, meaningful content (headings, labels, button text) —
+not bare structural elements like `<main>` or `<section>` that are always present regardless
+of whether child components rendered correctly.
+
+**Rule 14 — Scope Playwright locators to their container.**
+Never use a bare `page.getByRole("link", { name: "X" })` when the same text appears in
+multiple DOM regions (nav, hero, footer). Scope it: `page.getByRole("navigation").getByRole("link", …)`.
+Unscoped locators trigger strict-mode violations the moment a second matching element exists.
