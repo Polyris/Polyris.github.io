@@ -17,8 +17,8 @@ const contactItems = [
     icon: Mail,
     iconClass: "text-blue-500",
     label: "Email",
-    value: "info@quintagroup.com",
-    href: "mailto:info@quintagroup.com",
+    value: "polyris@quintagroup.com",
+    href: "mailto:polyris@quintagroup.com",
   },
   {
     icon: Phone,
